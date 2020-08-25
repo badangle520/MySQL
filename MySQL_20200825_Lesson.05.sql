@@ -3,6 +3,12 @@ USE myemployees;
 # ONLY_FULL_GROUP_BY 待解决
 show variables like '%sql_mode';
 
+SELECT @@GLOBAL.sql_mode;
+
+SELECT @@SESSION.sql_mode;
+
+set sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
 #二, 分组函数
 /*
  功能: 用作统计使用, 又称为聚合函数 或 统计函数 或 组函数
