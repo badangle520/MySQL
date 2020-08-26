@@ -187,10 +187,10 @@ FROM employees e,departments d
 WHERE e.department_id=d.department_id;
 
 #2. 查询 90 号部门员工的 job_id 和 90 号部门的 location_id
-SELECT e.job_id,l.location_id
-FROM employees e,departments d,locations l
-WHERE d.location_id = l.location_id
-AND   e.department_id = d.department_id;
+SELECT e.first_name,e.job_id,d.location_id
+FROM employees e,departments d
+WHERE e.department_id = d.department_id
+AND   e.department_id = 90;
 
 #3. 选择所有有奖金的员工的 last_name , department_name , location_id , city
 SELECT e.last_name,d.department_name,d.location_id,l.city
@@ -200,20 +200,35 @@ AND   d.location_id=l.location_id
 AND   e.commission_pct IS NOT NULL;
 
 #4. 选择city在Toronto工作的员工的 last_name , job_id , department_id , department_name
+SELECT e.last_name,e.job_id,e.department_id,d.department_name
+FROM employees e,departments d,locations l
+WHERE e.department_id=d.department_id
+AND   d.location_id=l.location_id
+AND   l.city='Toronto';
 
 #5. 查询每个工种、每个部门的部门名、工种名和最低工资
+SELECT d.department_name,j.job_title,MIN(e.salary) 最低工资
+FROM employees e,departments d,employees,jobs j
+WHERE e.department_id = d.department_id
+AND   e.job_id = j.job_id
+GROUP BY d.department_name,J.job_title;
 
 #6. 查询每个国家下的部门个数大于 2 的国家编号
+SELECT l.country_id,COUNT(*) 部门个数
+FROM departments d, locations l
+where d.location_id=l.location_id
+GROUP BY l.country_id
+HAVING 部门个数>2;
 
 #7、选择指定员工的姓名，员工号，以及他的管理者的姓名和员工号，结果类似于下面的格式
-#   employees Emp# manager Mgr# kochhar 101 king 100
+#   employees Emp# manager  Mgr#
+    kochhar   101  king    100
+SELECT e.last_name "employee",e.employee_id "Emp#",m.last_name "manager",m.employee_id "Mgr"
+FROM employees e, employees m
+WHERE e.manager_id=m.employee_id
+AND e.last_name='Kochhar';
 
-
-
-
-
-
-
+*-------------------------------------------------------------------------------------*
 
 #1 显示员工表的最大工资,工资平均值
 SELECT MAX(salary),AVG(salary) FROM employees;
@@ -246,13 +261,6 @@ SELECT DISTINCT job_id FROM employees WHERE job_id like '%a%e%';
 
 
  */
-
-
-
-
-
-
-
 
 ########################################################################################################
 #                     测试 -- 结束
